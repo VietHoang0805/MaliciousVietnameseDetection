@@ -8,8 +8,8 @@ from app.preprocess import load_stopwords
 
 
 def main():
-	st.set_page_config(page_title="PhoBERT Malicious Detection", layout="wide")
-	st.title("PhoBERT Malicious Comment Detection")
+	st.set_page_config(page_title="Malicious Comment Detection", layout="wide")
+	st.title("Malicious Comment Detection")
 	st.caption("Binary classification: 0 = Clean, 1 = Malicious")
 
 	with st.sidebar:
