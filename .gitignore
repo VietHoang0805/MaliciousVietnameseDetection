@@ -1,0 +1,39 @@
+### Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+### Virtual environments
+myenv/
+.venv/
+venv/
+env/
+.env/
+
+### Build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+
+### Testing and tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+### Jupyter
+.ipynb_checkpoints/
+
+### IDEs and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+### Logs
+*.log
+
+### weight
+weight/
