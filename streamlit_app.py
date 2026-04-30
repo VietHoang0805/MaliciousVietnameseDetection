@@ -1,7 +1,7 @@
 import pandas as pd
 import streamlit as st
 
-from app.config import MODEL_DIR, MODEL_WEIGHTS, STOPWORDS_PATH
+from app.config import DEFAULT_MODEL_KEY, MODEL_CATALOG, STOPWORDS_PATH, get_model_config
 from app.model import load_model_and_tokenizer
 from app.predict import predict_text
 from app.preprocess import load_stopwords
@@ -14,8 +14,15 @@ def main():
 
 	with st.sidebar:
 		st.subheader("Model")
-		st.write(f"Tokenizer: {MODEL_DIR}")
-		st.write(f"Weights: {MODEL_WEIGHTS}")
+		model_key = st.selectbox(
+			"Choose model",
+			options=list(MODEL_CATALOG.keys()),
+			index=list(MODEL_CATALOG.keys()).index(DEFAULT_MODEL_KEY),
+			format_func=lambda key: MODEL_CATALOG[key]["label"],
+		)
+		model_config = get_model_config(model_key)
+		st.write(f"Tokenizer: {model_config['model_dir']}")
+		st.write(f"Weights: {model_config['model_weights']}")
 		if "reload_token" not in st.session_state:
 			st.session_state["reload_token"] = 0
 		if st.button("Reload model"):
@@ -28,11 +35,11 @@ def main():
 	stopwords = load_stopwords(STOPWORDS_PATH)
 
 	@st.cache_resource
-	def cached_load_model(reload_token: int):
-		return load_model_and_tokenizer()
+	def cached_load_model(model_key: str, reload_token: int):
+		return load_model_and_tokenizer(model_key)
 
 	try:
-		model, tokenizer = cached_load_model(st.session_state["reload_token"])
+		model, tokenizer = cached_load_model(model_key, st.session_state["reload_token"])
 	except FileNotFoundError as exc:
 		st.error(str(exc))
 		st.stop()
